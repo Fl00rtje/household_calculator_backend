@@ -35,9 +35,10 @@ class House:
         return self.rent_mortgage + self.service_costs
 
     def __str__(self):
-        return f"Housing costs: €{self.total_costs} per month. \n" \
+        return f"Your housing details:\n" \
                f" - rent/mortgage: €{self.rent_mortgage} \n" \
-               f" - service costs: €{self.service_costs}"
+               f" - service costs: €{self.service_costs}\n" \
+               f" - total: €{self.total_costs} per month"
 
 
 def ask_amount(question):
@@ -65,8 +66,17 @@ def housing_details():
 def run_main_menu():
     print("In run_main_menu")
     options = main_menu_options()
+    # validate choice!!
     choice = int(input(options))
     main_menu_choice(choice)
+
+
+def run_personal_menu():
+    print("In run_personal_menu")
+    print(user)
+    options = personal_submenu_options()
+    choice = int(input(options))
+    personal_submenu_choice(choice)
 
 
 def run_house_submenu():
@@ -87,6 +97,21 @@ def house_submenu_choice(choice):
             user.house = None
         print(user.house)
         options = house_submenu_options()
+        choice = int(input(options))
+
+
+def personal_submenu_choice(choice):
+    print("In personal_submenu_choice")
+
+    while choice != 9:
+        if choice == 1:
+            print("Change first name")
+        elif choice == 2:
+            print("Change last name")
+        elif choice == 3:
+            print("Change email address")
+        print(user)
+        options = personal_submenu_options()
         choice = int(input(options))
 
 
@@ -118,7 +143,7 @@ def main_menu_choice(choice):
 
     while choice != 9:
         if choice == 1:
-            print("Go to personal Details")
+            run_personal_menu()
         elif choice == 2:
             run_house_submenu()
         elif choice == 3:
@@ -127,8 +152,18 @@ def main_menu_choice(choice):
         choice = int(input(options))
 
 
+def personal_submenu_options():
+    submenu_options = f"1 - Change first name\n" \
+                      f"2 - Change last name\n" \
+                      f"3 - Change email address\n" \
+                      f"9 - Back to main menu\n" \
+                      f"Your choice: "
+
+    return submenu_options
+
+
 def house_submenu_options():
-    # make this a general submenu with a variable house/car/etc
+    # make this a general submenu with a variable house/car/etc?
     submenu_options = f"1 - Add house\n" \
                    f"9 - Back to main menu\n" \
                    f"Your choice: "
@@ -140,9 +175,6 @@ def house_submenu_options():
                        f"Your choice: "
 
     return submenu_options
-
-
-
 
 
 if __name__ == '__main__':
