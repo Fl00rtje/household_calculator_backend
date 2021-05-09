@@ -40,12 +40,6 @@ class House:
                f" - service costs: €{self.service_costs}"
 
 
-def run_main_menu():
-    print("In run main menu")
-    options = main_menu_options()
-    main_menu_choice(options)
-
-
 def ask_amount(question):
     while True:
         try:
@@ -66,6 +60,34 @@ def housing_details():
             break
         except AttributeError:
             print("Something went wrong. Please try again.")
+
+
+def run_main_menu():
+    print("In run_main_menu")
+    options = main_menu_options()
+    main_menu_choice(options)
+
+
+def run_house_submenu():
+    print("In run_house_submenu")
+    print(user.house)
+    options = house_submenu_options()
+    choice = int(input(options))
+    house_submenu_choice(choice)
+
+
+def house_submenu_choice(choice):
+    print("In house_submenu_choice")
+
+    while choice != 9:
+        if choice == 1:
+            housing_details()
+        elif choice == 2:
+            user.house = None
+        print(user.house)
+        options = house_submenu_options()
+        choice = int(input(options))
+
 
 
 def main_menu_options():
@@ -92,30 +114,20 @@ def main_menu_options():
 
 
 def main_menu_choice(options):
-    choice = int(input(options))
     print("In main_menu_choice")
+    choice = int(input(options))
 
     while choice != 9:
         if choice == 1:
             print("Go to personal Details")
         elif choice == 2:
-            house_submenu_choice = house_submenu()
-            print(house_submenu_choice)
-
-            while house_submenu_choice != 9:
-                print("In main_menu_choice option 2.")
-                print(user.house)
-                if house_submenu_choice == 1:
-                    housing_details()
-                elif house_submenu_choice == 2:
-                    user.house = None
-                house_submenu_choice = house_submenu()
+            run_house_submenu()
         elif choice == 3:
             print("Car details")
         choice = int(input(options))
 
 
-def house_submenu():
+def house_submenu_options():
     # make this a general submenu with a variable house/car/etc
     submenu_options = f"1 - Add house\n" \
                    f"9 - Back to main menu\n" \
@@ -127,7 +139,8 @@ def house_submenu():
                        f"9 - Back to main menu\n" \
                        f"Your choice: "
 
-    return int(input(submenu_options))
+    #return int(input(submenu_options))
+    return submenu_options
 
 
 
