@@ -65,7 +65,8 @@ def housing_details():
 def run_main_menu():
     print("In run_main_menu")
     options = main_menu_options()
-    main_menu_choice(options)
+    choice = int(input(options))
+    main_menu_choice(choice)
 
 
 def run_house_submenu():
@@ -87,7 +88,6 @@ def house_submenu_choice(choice):
         print(user.house)
         options = house_submenu_options()
         choice = int(input(options))
-
 
 
 def main_menu_options():
@@ -113,9 +113,8 @@ def main_menu_options():
     return menu_options
 
 
-def main_menu_choice(options):
+def main_menu_choice(choice):
     print("In main_menu_choice")
-    choice = int(input(options))
 
     while choice != 9:
         if choice == 1:
@@ -124,6 +123,7 @@ def main_menu_choice(options):
             run_house_submenu()
         elif choice == 3:
             print("Car details")
+        options = main_menu_options()
         choice = int(input(options))
 
 
@@ -139,7 +139,6 @@ def house_submenu_options():
                        f"9 - Back to main menu\n" \
                        f"Your choice: "
 
-    #return int(input(submenu_options))
     return submenu_options
 
 
