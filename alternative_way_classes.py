@@ -19,6 +19,11 @@ class Data(User):
         self.house = None
         self.car = None
 
+    def housing_details(self):
+        if not self.house:
+            return "No housing details available."
+        return self.house
+
     def __str__(self):
         return super(Data, self).__str__() + \
                f"{'House: no details available.' if not self.house else self.house}\n" \
@@ -41,6 +46,17 @@ class House:
                f" - total: €{self.total_costs} per month"
 
 
+# (global) variables
+menu_error = "Please make a choice from the menu."
+
+
+# to do:
+# add changing personal data (including @property for variables?)
+# include in validation of ask_choice() the check of a number is not in the menu range
+# find out why I don't have to pass the variables to the functions (like menu_error)
+# include the car
+
+
 def ask_amount(question):
     while True:
         try:
@@ -50,6 +66,17 @@ def ask_amount(question):
             return number
         except ValueError:
             print(f"Please enter a positive number (no decimals).")
+
+
+def ask_choice(question):
+    while True:
+        try:
+            choice = int(input(question))
+            if choice < 0:
+                raise ValueError
+            return choice
+        except ValueError:
+            print(menu_error)
 
 
 def housing_details():
@@ -66,8 +93,7 @@ def housing_details():
 def run_main_menu():
     print("In run_main_menu")
     options = main_menu_options()
-    # validate choice!!
-    choice = int(input(options))
+    choice = ask_choice(options)
     main_menu_choice(choice)
 
 
@@ -75,15 +101,15 @@ def run_personal_menu():
     print("In run_personal_menu")
     print(user)
     options = personal_submenu_options()
-    choice = int(input(options))
+    choice = ask_choice(options)
     personal_submenu_choice(choice)
 
 
 def run_house_submenu():
     print("In run_house_submenu")
-    print(user.house)
+    print(user.housing_details())
     options = house_submenu_options()
-    choice = int(input(options))
+    choice = ask_choice(options)
     house_submenu_choice(choice)
 
 
@@ -95,9 +121,11 @@ def house_submenu_choice(choice):
             housing_details()
         elif choice == 2:
             user.house = None
-        print(user.house)
+        else:
+            print(menu_error)
+        print(user.housing_details())
         options = house_submenu_options()
-        choice = int(input(options))
+        choice = ask_choice(options)
 
 
 def personal_submenu_choice(choice):
@@ -110,9 +138,11 @@ def personal_submenu_choice(choice):
             print("Change last name")
         elif choice == 3:
             print("Change email address")
+        else:
+            print(menu_error)
         print(user)
         options = personal_submenu_options()
-        choice = int(input(options))
+        choice = ask_choice(options)
 
 
 def main_menu_options():
@@ -148,8 +178,10 @@ def main_menu_choice(choice):
             run_house_submenu()
         elif choice == 3:
             print("Car details")
+        else:
+            print(menu_error)
         options = main_menu_options()
-        choice = int(input(options))
+        choice = ask_choice(options)
 
 
 def personal_submenu_options():
