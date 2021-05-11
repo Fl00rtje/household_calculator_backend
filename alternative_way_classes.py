@@ -121,10 +121,11 @@ def run_personal_submenu():
     personal_submenu_choice(choice)
 
 
-def run_house_submenu():
+def run_house_submenu(utility):
     print("In run_house_submenu")
     print(user.housing_details())
-    options = house_submenu_options()
+    # options = house_submenu_options()
+    options = submenu_options(utility)
     choice = ask_choice(options)
     house_submenu_choice(choice)
 
@@ -197,7 +198,8 @@ def main_menu_choice(choice):
         if choice == 1:
             run_personal_submenu()
         elif choice == 2:
-            run_house_submenu()
+            utility = "house"
+            run_house_submenu(utility)
         elif choice == 3:
             print("Car details")
         else:
@@ -207,28 +209,32 @@ def main_menu_choice(choice):
 
 
 def personal_submenu_options():
-    submenu_options = f"1 - Change first name\n" \
+    options = f"1 - Change first name\n" \
                       f"2 - Change last name\n" \
                       f"3 - Change email address\n" \
                       f"9 - Back to main menu\n" \
                       f"Your choice: "
 
-    return submenu_options
+    return options
 
 
-def house_submenu_options():
-    # make this a general submenu with a variable house/car/etc?
-    submenu_options = f"1 - Add house\n" \
-                   f"9 - Back to main menu\n" \
-                   f"Your choice: "
+def submenu_options(utility):
+    if utility == "house":
+        utility_present = user.house
+    elif utility == "car":
+        utility_present = user.car
 
-    if user.house:
-        submenu_options = f"1 - Change house\n" \
-                       f"2 - Delete house\n" \
-                       f"9 - Back to main menu\n" \
-                       f"Your choice: "
+    options = f"1 - Add {utility}\n" \
+              f"9 - Back to main menu\n" \
+              f"Your choice: "
 
-    return submenu_options
+    if utility_present:
+        options = f"1 - Change {utility}\n" \
+                  f"2 - Delete {utility}\n" \
+                  f"9 - Back to main menu\n" \
+                  f"Your choice: "
+
+    return options
 
 
 if __name__ == '__main__':
