@@ -16,7 +16,7 @@ class User:
         self.email_address = new_email
         print(f"Your email address has been updated to: {self.email_address}")
 
-    def view_user_details(self):
+    def personal_details(self):
         return f"User:\n {self.fullname}\n"\
                f"Email:\n {self.email_address}\n"
 
@@ -40,6 +40,11 @@ class Data(User):
             return "No housing details available."
         return self.house
 
+    def car_details(self):
+        if not self.car:
+            return "No car details available"
+        return self.car
+
     def __str__(self):
         return super(Data, self).__str__() + \
                f"{'House: no details available.' if not self.house else self.house}\n" \
@@ -60,6 +65,26 @@ class House:
                f" - rent/mortgage: €{self.rent_mortgage} \n" \
                f" - service costs: €{self.service_costs}\n" \
                f" - total: €{self.total_costs} per month"
+
+
+class Car:
+    def __init__(self, insurance, road_taxes, parking_permit, road_assistance):
+        self.insurance = insurance
+        self.road_taxes = road_taxes
+        self.parking_permit = parking_permit
+        self.road_assistance = road_assistance
+
+    @property
+    def total_costs(self):
+        return self.insurance + self.road_taxes + self.parking_permit + self.road_assistance
+
+    def __str__(self):
+        return f"Your car details:\n" \
+               f" - insurance: €{self.insurance}\n" \
+               f" - road taxes: €{self.road_taxes}\n" \
+               f" - parking permit: €{self.parking_permit}\n" \
+               f" - road assistance: €{self.road_assistance}\n" \
+               f" - total: {self.total_costs} per month"
 
 
 # (global) variables
@@ -116,6 +141,7 @@ def run_main_menu():
 
 def run_personal_submenu():
     print("In run_personal_submenu")
+    print(user.personal_details())
     options = personal_submenu_options()
     choice = ask_choice(options)
     personal_submenu_choice(choice)
@@ -124,10 +150,17 @@ def run_personal_submenu():
 def run_house_submenu(utility):
     print("In run_house_submenu")
     print(user.housing_details())
-    # options = house_submenu_options()
     options = submenu_options(utility)
     choice = ask_choice(options)
     house_submenu_choice(choice)
+
+
+def run_car_submenu(utility):
+    print("In run_car_submenu")
+    print(user.car_details())
+    options = submenu_options(utility)
+    choice = ask_choice(options)
+    car_submenu_choice(choice)
 
 
 def house_submenu_choice(choice):
@@ -141,7 +174,23 @@ def house_submenu_choice(choice):
         else:
             print(menu_error)
         print(user.housing_details())
-        options = house_submenu_options()
+        options = submenu_options("house")
+        choice = ask_choice(options)
+
+
+def car_submenu_choice(choice):
+    print("In car_submenu_choice")
+
+    while choice != 9:
+        if choice == 1:
+            print("Change car")
+        elif choice == 2:
+            print("Delete car")
+            user.car = None
+        else:
+            print(menu_error)
+        print(user.car_details())
+        options = submenu_options("car")
         choice = ask_choice(options)
 
 
@@ -163,7 +212,7 @@ def personal_submenu_choice(choice):
             user.change_email(new_email)
         else:
             print(menu_error)
-        print(user.view_user_details())
+        print(user.personal_details())
         options = personal_submenu_options()
         choice = ask_choice(options)
 
@@ -202,6 +251,8 @@ def main_menu_choice(choice):
             run_house_submenu(utility)
         elif choice == 3:
             print("Car details")
+            utility = "car"
+            run_car_submenu(utility)
         else:
             print(menu_error)
         options = main_menu_options()
@@ -210,10 +261,10 @@ def main_menu_choice(choice):
 
 def personal_submenu_options():
     options = f"1 - Change first name\n" \
-                      f"2 - Change last name\n" \
-                      f"3 - Change email address\n" \
-                      f"9 - Back to main menu\n" \
-                      f"Your choice: "
+              f"2 - Change last name\n" \
+              f"3 - Change email address\n" \
+              f"9 - Back to main menu\n" \
+              f"Your choice: "
 
     return options
 
@@ -221,7 +272,7 @@ def personal_submenu_options():
 def submenu_options(utility):
     if utility == "house":
         utility_present = user.house
-    elif utility == "car":
+    else:
         utility_present = user.car
 
     options = f"1 - Add {utility}\n" \
@@ -245,11 +296,13 @@ if __name__ == '__main__':
     # print(user)
     #
     house = House(10, 10)
+    car = Car(40, 40, 10, 0)
     # # print(house)
     # house.rent_mortgage = 20
     # # print(house)
     #
     user.house = house
+    user.car = car
     # user.house.rent_mortgage = 30
     # print(user.house)
     # print(user.car)
