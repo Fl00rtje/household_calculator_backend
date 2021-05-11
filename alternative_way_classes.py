@@ -4,6 +4,14 @@ class User:
         self.last_name = last_name
         self.email_address = email_address
 
+    def change_first_name(self, new_first_name):
+        self.first_name = new_first_name
+        print(f"Your first name has been updated to: {self.first_name}")
+
+    def change_last_name(self, new_last_name):
+        self.last_name = new_last_name
+        print(f"Your first name has been updated to: {self.last_name}")
+
     def change_email(self, new_email):
         self.email_address = new_email
         print(f"Your email address has been updated to: {self.email_address}")
@@ -138,8 +146,12 @@ def personal_submenu_choice(choice):
     while choice != 9:
         if choice == 1:
             print("Change first name")
+            new_first_name = input("What is your first name? ")
+            user.change_first_name(new_first_name)
         elif choice == 2:
             print("Change last name")
+            new_last_name = input("What is your last name? ")
+            user.change_last_name(new_last_name)
         elif choice == 3:
             print("Change email address")
             new_email = input("What is your email address? ")
