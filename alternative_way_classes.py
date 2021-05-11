@@ -16,13 +16,17 @@ class User:
         self.email_address = new_email
         print(f"Your email address has been updated to: {self.email_address}")
 
+    def view_user_details(self):
+        return f"User:\n {self.fullname}\n"\
+               f"Email:\n {self.email_address}\n"
+
     @property
     def fullname(self):
         return f"{self.first_name} {self.last_name}"
 
     def __str__(self):
         return f"User:\n {self.fullname}\n" \
-               f"Email:\n {self.email_address}\n"
+               f"Email:\n {self.email_address}"
 
 
 class Data(User):
@@ -63,7 +67,8 @@ menu_error = "Please make a choice from the menu."
 
 
 # to do:
-# add changing personal data (including @property for variables?)
+# add changing personal data (including @property for variables?) --> done
+# add validation for string values
 # include in validation of ask_choice() the check of a number is not in the menu range
 # find out why I don't have to pass the variables to the functions (like menu_error)
 # include the car
@@ -109,9 +114,8 @@ def run_main_menu():
     main_menu_choice(choice)
 
 
-def run_personal_menu():
-    print("In run_personal_menu")
-    print(user)
+def run_personal_submenu():
+    print("In run_personal_submenu")
     options = personal_submenu_options()
     choice = ask_choice(options)
     personal_submenu_choice(choice)
@@ -158,7 +162,7 @@ def personal_submenu_choice(choice):
             user.change_email(new_email)
         else:
             print(menu_error)
-        # print(user)
+        print(user.view_user_details())
         options = personal_submenu_options()
         choice = ask_choice(options)
 
@@ -191,7 +195,7 @@ def main_menu_choice(choice):
 
     while choice != 9:
         if choice == 1:
-            run_personal_menu()
+            run_personal_submenu()
         elif choice == 2:
             run_house_submenu()
         elif choice == 3:
