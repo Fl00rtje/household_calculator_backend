@@ -4,17 +4,9 @@ class User:
         self.last_name = last_name
         self.email_address = email_address
 
-    @property
-    def email_address(self):
-        return self.__email_address
-
-    @email_address.setter
-    def email_address(self, new_email):
-        self.__email_address = new_email
-
-    @email_address.deleter
-    def email_address(self):
-        self.__email_address = None
+    def change_email(self, new_email):
+        self.email_address = new_email
+        print(f"Your email address has been updated to: {self.email_address}")
 
     @property
     def fullname(self):
@@ -150,8 +142,8 @@ def personal_submenu_choice(choice):
             print("Change last name")
         elif choice == 3:
             print("Change email address")
-            user.email_address = input("What is your email address? ")
-            print(f"Your email address has been set to: {user.email_address}")
+            new_email = input("What is your email address? ")
+            user.change_email(new_email)
         else:
             print(menu_error)
         # print(user)
