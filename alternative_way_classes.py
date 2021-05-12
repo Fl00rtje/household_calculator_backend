@@ -92,11 +92,19 @@ menu_error = "Please make a choice from the menu."
 
 
 # to do:
-# add changing personal data (including @property for variables?) --> done
-# add validation for string values
-# include in validation of ask_choice() the check of a number is not in the menu range
 # find out why I don't have to pass the variables to the functions (like menu_error)
 # include the car
+
+
+# --- CHECKING DATA ---
+def __make_question(options):
+    question = ""
+    for value in options.values():
+        question += value
+
+    question += "Your choice: "
+
+    return question
 
 
 def ask_amount(question):
@@ -110,17 +118,19 @@ def ask_amount(question):
             print(f"Please enter a positive number (no decimals).")
 
 
-def ask_choice(question):
+def ask_choice(options):
+    question = __make_question(options)
     while True:
         try:
             choice = int(input(question))
-            if choice < 0:
+            if choice not in options.keys():
                 raise ValueError
             return choice
         except ValueError:
             print(menu_error)
 
 
+# --- ASKING DETAILS FROM USER ---
 def housing_details():
     while True:
         try:
@@ -132,89 +142,12 @@ def housing_details():
             print("Something went wrong. Please try again.")
 
 
+# -- MAIN MENU ---
 def run_main_menu():
     print("In run_main_menu")
     options = main_menu_options()
     choice = ask_choice(options)
     main_menu_choice(choice)
-
-
-def run_personal_submenu():
-    print("In run_personal_submenu")
-    print(user.personal_details())
-    options = personal_submenu_options()
-    choice = ask_choice(options)
-    personal_submenu_choice(choice)
-
-
-def run_house_submenu(utility):
-    print("In run_house_submenu")
-    print(user.housing_details())
-    options = submenu_options(utility)
-    choice = ask_choice(options)
-    house_submenu_choice(choice)
-
-
-def run_car_submenu(utility):
-    print("In run_car_submenu")
-    print(user.car_details())
-    options = submenu_options(utility)
-    choice = ask_choice(options)
-    car_submenu_choice(choice)
-
-
-def house_submenu_choice(choice):
-    print("In house_submenu_choice")
-
-    while choice != 9:
-        if choice == 1:
-            housing_details()
-        elif choice == 2:
-            user.house = None
-        else:
-            print(menu_error)
-        print(user.housing_details())
-        options = submenu_options("house")
-        choice = ask_choice(options)
-
-
-def car_submenu_choice(choice):
-    print("In car_submenu_choice")
-
-    while choice != 9:
-        if choice == 1:
-            print("Change car")
-        elif choice == 2:
-            print("Delete car")
-            user.car = None
-        else:
-            print(menu_error)
-        print(user.car_details())
-        options = submenu_options("car")
-        choice = ask_choice(options)
-
-
-def personal_submenu_choice(choice):
-    print("In personal_submenu_choice")
-
-    while choice != 9:
-        if choice == 1:
-            print("Change first name")
-            new_first_name = input("What is your first name? ")
-            user.change_first_name(new_first_name)
-        elif choice == 2:
-            print("Change last name")
-            new_last_name = input("What is your last name? ")
-            user.change_last_name(new_last_name)
-        elif choice == 3:
-            print("Change email address")
-            new_email = input("What is your email address? ")
-            user.change_email(new_email)
-        else:
-            print(menu_error)
-        print(user.personal_details())
-        options = personal_submenu_options()
-        choice = ask_choice(options)
 
 
 def main_menu_options():
@@ -260,39 +193,7 @@ def main_menu_choice(choice):
         choice = ask_choice(options)
 
 
-def __make_question(options):
-    question = ""
-    for value in options.values():
-        question += value
-
-    question += "Your choice: "
-
-    return question
-
-
-def ask_choice(options):
-    question = __make_question(options)
-    while True:
-        try:
-            choice = int(input(question))
-            if choice not in options.keys():
-                raise ValueError
-            return choice
-        except ValueError:
-            print(menu_error)
-
-
-def personal_submenu_options():
-    options = {
-        1: "1 - Change first name\n",
-        2: "2 - Change last name\n",
-        3: "3 - Change email address\n",
-        9: "9 - Back to main menu\n",
-    }
-
-    return options
-
-
+# --- GENERAL SUBMENU ---
 def submenu_options(utility):
     if utility == "house":
         utility_present = user.house
@@ -312,6 +213,98 @@ def submenu_options(utility):
         }
 
     return options
+
+
+# --- PERSONAL SUBMENU ---
+def run_personal_submenu():
+    print("In run_personal_submenu")
+    print(user.personal_details())
+    options = personal_submenu_options()
+    choice = ask_choice(options)
+    personal_submenu_choice(choice)
+
+
+def personal_submenu_options():
+    options = {
+        1: "1 - Change first name\n",
+        2: "2 - Change last name\n",
+        3: "3 - Change email address\n",
+        9: "9 - Back to main menu\n",
+    }
+
+    return options
+
+
+def personal_submenu_choice(choice):
+    print("In personal_submenu_choice")
+
+    while choice != 9:
+        if choice == 1:
+            print("Change first name")
+            new_first_name = input("What is your first name? ")
+            user.change_first_name(new_first_name)
+        elif choice == 2:
+            print("Change last name")
+            new_last_name = input("What is your last name? ")
+            user.change_last_name(new_last_name)
+        elif choice == 3:
+            print("Change email address")
+            new_email = input("What is your email address? ")
+            user.change_email(new_email)
+        else:
+            print(menu_error)
+        print(user.personal_details())
+        options = personal_submenu_options()
+        choice = ask_choice(options)
+
+
+# --- HOUSE SUBMENU ---
+def run_house_submenu(utility):
+    print("In run_house_submenu")
+    print(user.housing_details())
+    options = submenu_options(utility)
+    choice = ask_choice(options)
+    house_submenu_choice(choice)
+
+
+def house_submenu_choice(choice):
+    print("In house_submenu_choice")
+
+    while choice != 9:
+        if choice == 1:
+            housing_details()
+        elif choice == 2:
+            user.house = None
+        else:
+            print(menu_error)
+        print(user.housing_details())
+        options = submenu_options("house")
+        choice = ask_choice(options)
+
+
+# --- CAR SUBMENU ---
+def run_car_submenu(utility):
+    print("In run_car_submenu")
+    print(user.car_details())
+    options = submenu_options(utility)
+    choice = ask_choice(options)
+    car_submenu_choice(choice)
+
+
+def car_submenu_choice(choice):
+    print("In car_submenu_choice")
+
+    while choice != 9:
+        if choice == 1:
+            print("Change car")
+        elif choice == 2:
+            print("Delete car")
+            user.car = None
+        else:
+            print(menu_error)
+        print(user.car_details())
+        options = submenu_options("car")
+        choice = ask_choice(options)
 
 
 if __name__ == '__main__':
