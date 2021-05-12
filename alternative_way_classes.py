@@ -231,11 +231,12 @@ def main_menu_options():
     if user.car:
         options["car"] = "View/Change/Delete car details"
 
-    menu_options = f"1 - {options['user']}\n" \
-                   f"2 - {options['house']}\n" \
-                   f"3 - {options['car']}\n" \
-                   f"9 - Exit\n" \
-                   f"Your choice: "
+    menu_options = {
+        1: f"1 - {options['user']}\n",
+        2: f"2 - {options['house']}\n",
+        3: f"3 - {options['car']}\n",
+        9: f"9 - Exit\n"
+    }
 
     return menu_options
 
@@ -259,12 +260,35 @@ def main_menu_choice(choice):
         choice = ask_choice(options)
 
 
+def __make_question(options):
+    question = ""
+    for value in options.values():
+        question += value
+
+    question += "Your choice: "
+
+    return question
+
+
+def ask_choice(options):
+    question = __make_question(options)
+    while True:
+        try:
+            choice = int(input(question))
+            if choice not in options.keys():
+                raise ValueError
+            return choice
+        except ValueError:
+            print(menu_error)
+
+
 def personal_submenu_options():
-    options = f"1 - Change first name\n" \
-              f"2 - Change last name\n" \
-              f"3 - Change email address\n" \
-              f"9 - Back to main menu\n" \
-              f"Your choice: "
+    options = {
+        1: "1 - Change first name\n",
+        2: "2 - Change last name\n",
+        3: "3 - Change email address\n",
+        9: "9 - Back to main menu\n",
+    }
 
     return options
 
@@ -275,15 +299,17 @@ def submenu_options(utility):
     else:
         utility_present = user.car
 
-    options = f"1 - Add {utility}\n" \
-              f"9 - Back to main menu\n" \
-              f"Your choice: "
+    options = {
+        1: f"1 - Add {utility}\n",
+        9: f"9 - Back to main menu\n"
+    }
 
     if utility_present:
-        options = f"1 - Change {utility}\n" \
-                  f"2 - Delete {utility}\n" \
-                  f"9 - Back to main menu\n" \
-                  f"Your choice: "
+        options = {
+            1: f"1 - Change {utility}\n",
+            2: f"2 - Delete {utility}\n",
+            9: f"9 - Back to main menu\n"
+        }
 
     return options
 

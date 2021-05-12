@@ -1,23 +1,33 @@
-class OurClass:
+menu_error = "Please make a choice from the menu."
 
-    def __init__(self, a):
-        self.OurAtt = a
-
-    @property
-    def OurAtt(self):
-        return self.__OurAtt
-
-    @OurAtt.setter
-    def OurAtt(self, val):
-        if val < 0:
-            self.__OurAtt = 0
-        elif val > 1000:
-            self.__OurAtt = 1000
-        else:
-            self.__OurAtt = val
+options_2 = {
+        1: "1 - Change first name\n",
+        2: "2 - Change last name\n",
+        9: "9 - Back to main menu\n",
+    }
 
 
-x = OurClass(10)
-x.OurAtt = 1001
-print(x.OurAtt)
+def __make_question(options):
+    question = ""
+    for value in options.values():
+        question += value
+
+    question += "Your choice: "
+
+    return question
+
+
+def ask_choice(option_set):
+    question = __make_question(option_set)
+    while True:
+        try:
+            choice = int(input(question))
+            if choice not in option_set.keys():
+                raise ValueError
+            return choice
+        except ValueError:
+            print(menu_error)
+
+
+ask_choice(options_2)
 
