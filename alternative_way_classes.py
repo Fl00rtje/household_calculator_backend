@@ -92,8 +92,13 @@ menu_error = "Please make a choice from the menu."
 
 
 # to do:
-# find out why I don't have to pass the variables to the functions (like menu_error)
+# include the functionality that asks the user for their information
 # include the car
+# reorganize the files
+# find out why I don't have to pass the variables to the functions (like menu_error)
+# make Data take a User object like house and car instead of inherit from User?
+# write tests?
+
 
 
 # --- CHECKING DATA ---
@@ -116,7 +121,7 @@ def ask_amount(question):
     """
     Asks the user for input on how much they pay and takes the input.
     :param question: the question that is displayed to the user.
-    For example: "How much do you pay for car insurance per month?"
+    For example: How much do you pay for rent / mortgage?
     :return: the number (cost) the user entered as an integer.
     """
     while True:
@@ -160,6 +165,12 @@ def housing_details():
 
 # -- MAIN MENU ---
 def run_main_menu():
+    """
+    This is the starting point of the application. Function that runs the main menu.
+    From here you can go into the submenu's.
+    From the submenu's you can return to the main menu.
+    :return: returns nothing.
+    """
     print("In run_main_menu")
     options = main_menu_options()
     choice = ask_choice(options)
