@@ -98,6 +98,11 @@ menu_error = "Please make a choice from the menu."
 
 # --- CHECKING DATA ---
 def __make_question(options):
+    """
+    Generates a string with menu options that are displayed to the user from the options variable.
+    :param options: dictionary with menu options.
+    :return: the menu options as a string.
+    """
     question = ""
     for value in options.values():
         question += value
@@ -108,6 +113,12 @@ def __make_question(options):
 
 
 def ask_amount(question):
+    """
+    Asks the user for input on how much they pay and takes the input.
+    :param question: the question that is displayed to the user.
+    For example: "How much do you pay for car insurance per month?"
+    :return: the number (cost) the user entered as an integer.
+    """
     while True:
         try:
             number = int(input(question + " "))
@@ -119,6 +130,11 @@ def ask_amount(question):
 
 
 def ask_choice(options):
+    """
+    Displays the menu options to the user and takes the input from the user.
+    :param options: dictionary with menu options.
+    :return: the choice user made from the menu as an integer.
+    """
     question = __make_question(options)
     while True:
         try:
