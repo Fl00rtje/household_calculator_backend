@@ -101,6 +101,25 @@ def ask_amount(question):
             print(f"Please enter a positive number (no decimals).")
 
 
+def yes_or_no(question):
+    """
+    Function asks a yes or no question to the user.
+    :param question: the question that is displayed to the user.
+    :return: Returns True or False
+    """
+    while True:
+        try:
+            answer = input(f'{question} (y/n) ').lower()
+            if answer == 'y':
+                return True
+            elif answer == 'n':
+                return False
+            else:
+                raise ValueError
+        except ValueError:
+            print("Please enter 'y' or 'n'")
+
+
 # --- ASKING THE USER FOR INPUT ---
 def user_details():
     """
@@ -123,16 +142,28 @@ def housing_details():
     return House(rent_mortgage, service_costs)
 
 
-# def car_details():
-#     """
-#     Function asks the user input for the car: insurance, road taxes, parking permit and road assistance.
-#     :return: Returns a car object with the given input.
-#     """
-#     insurance = ask_amount("How much do you pay for your car insurance?")
-#     road_taxes = ask_amount("How much do you pay for road taxes?")
-#     parking_permit = cost_parking_permit()
-#     road_assistance = cost_road_assistance()
-#     return Car(insurance, road_taxes, parking_permit, road_assistance)
+def cost_parking_permit():
+    if yes_or_no("Do you have a parking permit?"):
+        return ask_amount("How much do you pay for your parking permit?")
+    return 0
+
+
+def cost_road_assistance():
+    if yes_or_no("Do you have road assistance?"):
+        return ask_amount("How much do you pay for road assistance?")
+    return 0
+
+
+def car_details():
+    """
+    Function asks the user input for the car: insurance, road taxes, parking permit and road assistance.
+    :return: Returns a car object with the given input.
+    """
+    insurance = ask_amount("How much do you pay for your car insurance?")
+    road_taxes = ask_amount("How much do you pay for road taxes?")
+    parking_permit = cost_parking_permit()
+    road_assistance = cost_road_assistance()
+    return Car(insurance, road_taxes, parking_permit, road_assistance)
 
 
 if __name__ == '__main__':
@@ -140,4 +171,6 @@ if __name__ == '__main__':
     user_data = Data(user)
     house = housing_details()
     user_data.house = house
+    car = car_details()
+    user_data.car = car
     print(user_data)
