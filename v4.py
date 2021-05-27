@@ -58,7 +58,7 @@ class Car:
                f" - road taxes: €{self.road_taxes}\n" \
                f" - parking permit: €{self.parking_permit}\n" \
                f" - road assistance: €{self.road_assistance}\n" \
-               f" - total: {self.total_costs} per month"
+               f" - total: €{self.total_costs} per month"
 
 
 class Data:
@@ -121,6 +121,9 @@ def yes_or_no(question):
 
 
 # --- ASKING THE USER FOR INPUT ---
+menu_error = "Please make a choice from the menu."
+
+
 def user_details():
     """
     Function asks the user input on first name, last name and email address.
@@ -143,12 +146,20 @@ def housing_details():
 
 
 def cost_parking_permit():
+    """
+    Function asks the user about having a parking permit and if yes, the costs.
+    :return: Returns the cost of the parking permit as an integer.
+    """
     if yes_or_no("Do you have a parking permit?"):
         return ask_amount("How much do you pay for your parking permit?")
     return 0
 
 
 def cost_road_assistance():
+    """
+    Function asks the user about having a road assistance and if yes, the costs.
+    :return: Returns the cost of the road assistance as an integer.
+    """
     if yes_or_no("Do you have road assistance?"):
         return ask_amount("How much do you pay for road assistance?")
     return 0
@@ -166,11 +177,115 @@ def car_details():
     return Car(insurance, road_taxes, parking_permit, road_assistance)
 
 
+def __make_question(options):
+    """
+    Generates a string with menu options that are displayed to the user from the options variable.
+    :param options: dictionary with menu options.
+    :return: the menu options as a string.
+    """
+    question = ""
+    for value in options.values():
+        question += value
+
+    question += "Your choice: "
+
+    return question
+
+
+def ask_choice(options):
+    """
+    Displays the menu options to the user and takes the input from the user.
+    :param options: dictionary with menu options.
+    :return: the choice user made from the menu as an integer.
+    """
+    question = __make_question(options)
+    while True:
+        try:
+            choice = int(input(question))
+            if choice not in options.keys():
+                raise ValueError
+            return choice
+        except ValueError:
+            print(menu_error)
+
+
+# -- MAIN MENU ---
+def generate_main_menu_options():
+    """
+    Function generates the menu options that will be displayed to the user based on existing user data.
+    :return: Returns the generated menu options as a string.
+    """
+    print("In main_menu_options")
+    options = {
+        "user": "View/Change/Delete Personal details",
+        "house": "Register housing details",
+        "car": "Register car details",
+    }
+
+    if user_data.house:
+        options["house"] = "View/Change/Delete housing details"
+
+    if user_data.car:
+        options["car"] = "View/Change/Delete car details"
+
+    menu_options = {
+        1: f"1 - {options['user']}\n",
+        2: f"2 - {options['house']}\n",
+        3: f"3 - {options['car']}\n",
+        9: f"9 - Exit\n"
+    }
+
+    return menu_options
+
+
+def main_menu_process_choice(choice):
+    """
+    Function redirects the user based on the choice made from the menu options.
+    :param choice: the choice (integer) the user made form the menu.
+    :return: returns nothing
+    """
+    print("In main_menu_choice")
+
+    while choice != 9:
+        if choice == 1:
+            print("run_personal_submenu()")
+            # run_personal_submenu()
+        elif choice == 2:
+            print("run_house_submenu(utility)")
+            # utility = "house"
+            # run_house_submenu(utility)
+        elif choice == 3:
+            print("run_car_submenu(utility)")
+            # utility = "car"
+            # run_car_submenu(utility)
+        else:
+            print(menu_error)
+        options = generate_main_menu_options()
+        choice = ask_choice(options)
+
+
+def run_main_menu():
+    """
+    This is the starting point of the application. Function that runs the main menu.
+    From here you can go into the submenu's.
+    From the submenu's you can return to the main menu.
+    :return: returns nothing.
+    """
+    print("In run_main_menu")
+    options = generate_main_menu_options()
+    choice = ask_choice(options)
+    main_menu_process_choice(choice)
+
+
 if __name__ == '__main__':
-    user = user_details()
+    # user = user_details()
+    # user_data = Data(user)
+    # house = housing_details()
+    # user_data.house = house
+    # car = car_details()
+    # user_data.car = car
+    # print(user_data)
+
+    user = User("Flora", "Oceania", "flora.oceania@gmail.com")
     user_data = Data(user)
-    house = housing_details()
-    user_data.house = house
-    car = car_details()
-    user_data.car = car
-    print(user_data)
+    run_main_menu()
