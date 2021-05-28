@@ -209,7 +209,7 @@ def ask_choice(options):
             print(menu_error)
 
 
-# -- MAIN MENU ---
+# ----- MAIN MENU -----
 def generate_main_menu_options():
     """
     Function generates the menu options that will be displayed to the user based on existing user data.
@@ -249,7 +249,7 @@ def main_menu_process_choice(choice):
     while choice != 9:
         if choice == 1:
             print("run_personal_submenu()")
-            # run_personal_submenu()
+            run_personal_submenu()
         elif choice == 2:
             print("run_house_submenu(utility)")
             # utility = "house"
@@ -266,7 +266,7 @@ def main_menu_process_choice(choice):
 
 def run_main_menu():
     """
-    This is the starting point of the application. Function that runs the main menu.
+    This is the starting point of the application. The function runs the main menu.
     From here you can go into the submenu's.
     From the submenu's you can return to the main menu.
     :return: returns nothing.
@@ -275,6 +275,61 @@ def run_main_menu():
     options = generate_main_menu_options()
     choice = ask_choice(options)
     main_menu_process_choice(choice)
+
+
+# --- PERSONAL SUBMENU ---
+def personal_submenu_options():
+    """
+    Function generates the menu options that will be displayed to the user.
+    Since the menu options aren't changing based upon the user data at the moment, it could also be a variable.
+    :return: Returns the generated menu options as a string.
+    """
+    options = {
+        1: "1 - Change first name\n",
+        2: "2 - Change last name\n",
+        3: "3 - Change email address\n",
+        9: "9 - Back to main menu\n",
+    }
+
+    return options
+
+
+def personal_submenu_choice(choice):
+    """
+    Function redirects the user based on the choice made from the personal submenu options.
+    :param choice: the choice (integer) the user made form the personal submenu.
+    :return: returns nothing.
+    """
+    print("In personal_submenu_choice")
+
+    while choice != 9:
+        if choice == 1:
+            new_first_name = input("What is your first name? ")
+            user_data.user.change_first_name(new_first_name)
+        elif choice == 2:
+            new_last_name = input("What is your last name? ")
+            user_data.user.change_last_name(new_last_name)
+        elif choice == 3:
+            new_email = input("What is your email address? ")
+            user_data.user.change_email(new_email)
+        else:
+            print(menu_error)
+        print(user_data.user)
+        options = personal_submenu_options()
+        choice = ask_choice(options)
+
+
+def run_personal_submenu():
+    """
+    This is the starting point of the personal submenu.
+    From here you can choose from the personal submenu actions and get redirected to perform them.
+    :return: returns nothing.
+    """
+    print("In run_personal_submenu")
+    print(user_data.user)
+    options = personal_submenu_options()
+    choice = ask_choice(options)
+    personal_submenu_choice(choice)
 
 
 if __name__ == '__main__':
