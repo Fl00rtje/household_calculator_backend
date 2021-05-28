@@ -265,6 +265,21 @@ def process_choice_personal_submenu(choice):
 
 
 # --- GENERAL SUBMENU OPTIONS ---
+def run_submenu(utility):
+    """
+    This is the starting point of the house submenu.
+    From here you can choose from the house submenu and get redirected to your choice.
+    :return: returns nothing.
+    """
+    print("In run_submenu")
+    print(utility)
+    show_utility_details(utility)
+    options = generate_submenu_options(utility)
+    choice = ask_choice(options)
+    # process_choice_house_submenu(choice)
+    process_choice_submenu(choice, utility)
+
+
 def generate_submenu_options(utility):
     """
     Function generates the submenu options based on the chosen utility (f.e. "house" or "car").
@@ -291,6 +306,53 @@ def generate_submenu_options(utility):
     return options
 
 
+def show_utility_details(utility):
+    print("In show_utility_details")
+    if utility == "house":
+        print(user_data.housing_details())
+    else:
+        print(user_data.car_details())
+
+
+def add_change_utility(utility):
+    print("In add_change_utility")
+    if utility == "house":
+        house = housing_details()
+        user_data.house = house
+    else:
+        car = car_details()
+        user_data.car = car
+
+
+def delete_utility(utility):
+    print("In delete_utility")
+    if utility == "house":
+        user_data.house = None
+    else:
+        user_data.car = None
+
+
+def process_choice_submenu(choice, utility):
+    """
+    Function redirects the user based on the choice made from the utility submenu options.
+    :param utility:
+    :param choice: the choice (integer) the user made form the utility submenu.
+    :return: returns nothing.
+    """
+    print("In house_submenu_choice")
+
+    while choice != 9:
+        if choice == 1:
+            add_change_utility(utility)
+        elif choice == 2:
+            delete_utility(utility)
+        else:
+            print(menu_error)
+        show_utility_details(utility)
+        options = generate_submenu_options(utility)
+        choice = ask_choice(options)
+
+
 # --- HOUSE SUBMENU ---
 def run_house_submenu(utility):
     """
@@ -302,7 +364,8 @@ def run_house_submenu(utility):
     print(user_data.housing_details())
     options = generate_submenu_options(utility)
     choice = ask_choice(options)
-    process_choice_house_submenu(choice)
+    # process_choice_house_submenu(choice)
+    process_choice_submenu(choice, utility)
 
 
 def process_choice_house_submenu(choice):
@@ -416,13 +479,15 @@ def process_choice_main_menu(choice):
             print("run_personal_submenu()")
             run_personal_submenu()
         elif choice == 2:
-            print("run_house_submenu(utility)")
+            # print("run_house_submenu(utility)")
             utility = "house"
-            run_house_submenu(utility)
+            # run_house_submenu(utility)
+            run_submenu(utility)
         elif choice == 3:
-            print("run_car_submenu(utility)")
+            # print("run_car_submenu(utility)")
             utility = "car"
-            run_car_submenu(utility)
+            # run_car_submenu(utility)
+            run_submenu(utility)
         else:
             print(menu_error)
         options = generate_main_menu_options()
