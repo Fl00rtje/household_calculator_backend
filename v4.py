@@ -209,74 +209,6 @@ def ask_choice(options):
             print(menu_error)
 
 
-# ----- MAIN MENU -----
-def generate_main_menu_options():
-    """
-    Function generates the menu options that will be displayed to the user based on existing user data.
-    :return: Returns the generated menu options as a string.
-    """
-    print("In main_menu_options")
-    options = {
-        "user": "View/Change/Delete Personal details",
-        "house": "Register housing details",
-        "car": "Register car details",
-    }
-
-    if user_data.house:
-        options["house"] = "View/Change/Delete housing details"
-
-    if user_data.car:
-        options["car"] = "View/Change/Delete car details"
-
-    menu_options = {
-        1: f"1 - {options['user']}\n",
-        2: f"2 - {options['house']}\n",
-        3: f"3 - {options['car']}\n",
-        9: f"9 - Exit\n"
-    }
-
-    return menu_options
-
-
-def main_menu_process_choice(choice):
-    """
-    Function redirects the user based on the choice made from the menu options.
-    :param choice: the choice (integer) the user made form the menu.
-    :return: returns nothing
-    """
-    print("In main_menu_choice")
-
-    while choice != 9:
-        if choice == 1:
-            print("run_personal_submenu()")
-            run_personal_submenu()
-        elif choice == 2:
-            print("run_house_submenu(utility)")
-            # utility = "house"
-            # run_house_submenu(utility)
-        elif choice == 3:
-            print("run_car_submenu(utility)")
-            # utility = "car"
-            # run_car_submenu(utility)
-        else:
-            print(menu_error)
-        options = generate_main_menu_options()
-        choice = ask_choice(options)
-
-
-def run_main_menu():
-    """
-    This is the starting point of the application. The function runs the main menu.
-    From here you can go into the submenu's.
-    From the submenu's you can return to the main menu.
-    :return: returns nothing.
-    """
-    print("In run_main_menu")
-    options = generate_main_menu_options()
-    choice = ask_choice(options)
-    main_menu_process_choice(choice)
-
-
 # --- PERSONAL SUBMENU ---
 def personal_submenu_options():
     """
@@ -330,6 +262,121 @@ def run_personal_submenu():
     options = personal_submenu_options()
     choice = ask_choice(options)
     personal_submenu_choice(choice)
+
+
+# --- HOUSE SUBMENU ---
+def run_house_submenu(utility):
+    print("In run_house_submenu")
+    print(user_data.housing_details())
+    options = submenu_options(utility)
+    choice = ask_choice(options)
+    house_submenu_choice(choice)
+
+
+def house_submenu_choice(choice):
+    print("In house_submenu_choice")
+
+    while choice != 9:
+        if choice == 1:
+            house = housing_details()
+            user_data.house = house
+        elif choice == 2:
+            user_data.house = None
+        else:
+            print(menu_error)
+        print(user_data.housing_details())
+        options = submenu_options("house")
+        choice = ask_choice(options)
+
+
+# --- GENERAL SUBMENU ---
+def submenu_options(utility):
+    if utility == "house":
+        utility_present = user_data.house
+    else:
+        utility_present = user_data.car
+
+    options = {
+        1: f"1 - Add {utility}\n",
+        9: f"9 - Back to main menu\n"
+    }
+
+    if utility_present:
+        options = {
+            1: f"1 - Change {utility}\n",
+            2: f"2 - Delete {utility}\n",
+            9: f"9 - Back to main menu\n"
+        }
+
+    return options
+
+
+# ----- MAIN MENU -----
+def generate_main_menu_options():
+    """
+    Function generates the menu options that will be displayed to the user based on existing user data.
+    :return: Returns the generated menu options as a string.
+    """
+    print("In main_menu_options")
+    options = {
+        "user": "View/Change/Delete Personal details",
+        "house": "Register housing details",
+        "car": "Register car details",
+    }
+
+    if user_data.house:
+        options["house"] = "View/Change/Delete housing details"
+
+    if user_data.car:
+        options["car"] = "View/Change/Delete car details"
+
+    menu_options = {
+        1: f"1 - {options['user']}\n",
+        2: f"2 - {options['house']}\n",
+        3: f"3 - {options['car']}\n",
+        9: f"9 - Exit\n"
+    }
+
+    return menu_options
+
+
+def main_menu_process_choice(choice):
+    """
+    Function redirects the user based on the choice made from the menu options.
+    :param choice: the choice (integer) the user made form the menu.
+    :return: returns nothing
+    """
+    print("In main_menu_choice")
+
+    while choice != 9:
+        if choice == 1:
+            print("run_personal_submenu()")
+            run_personal_submenu()
+        elif choice == 2:
+            print("run_house_submenu(utility)")
+            utility = "house"
+            run_house_submenu(utility)
+        elif choice == 3:
+            print("run_car_submenu(utility)")
+            # utility = "car"
+            # run_car_submenu(utility)
+        else:
+            print(menu_error)
+        options = generate_main_menu_options()
+        choice = ask_choice(options)
+
+
+def run_main_menu():
+    """
+    This is the starting point of the application. The function runs the main menu.
+    From here you can go into the submenu's.
+    From the submenu's you can return to the main menu.
+    :return: returns nothing.
+    """
+    print("In run_main_menu")
+    options = generate_main_menu_options()
+    choice = ask_choice(options)
+    main_menu_process_choice(choice)
 
 
 if __name__ == '__main__':
