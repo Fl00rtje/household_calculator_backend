@@ -265,6 +265,9 @@ def process_choice_personal_submenu(choice):
 
 
 # --- GENERAL SUBMENU ---
+house_utility = "house"
+car_utility = "car"
+
 def run_submenu(utility):
     """
     This is the starting point of the the utility submenu.
@@ -284,7 +287,7 @@ def generate_submenu_options(utility):
     :param utility: string containing the origin of the costs.
     :return: returns the submenu options as a string.
     """
-    if utility == "house":
+    if utility == house_utility:
         utility_present = user_data.house
     else:
         utility_present = user_data.car
@@ -306,7 +309,7 @@ def generate_submenu_options(utility):
 
 def show_utility_details(utility):
     print("In show_utility_details")
-    if utility == "house":
+    if utility == house_utility:
         print(user_data.housing_details())
     else:
         print(user_data.car_details())
@@ -314,7 +317,7 @@ def show_utility_details(utility):
 
 def add_change_utility(utility):
     print("In add_change_utility")
-    if utility == "house":
+    if utility == house_utility:
         house = housing_details()
         user_data.house = house
     else:
@@ -324,7 +327,7 @@ def add_change_utility(utility):
 
 def delete_utility(utility):
     print("In delete_utility")
-    if utility == "house":
+    if utility == house_utility:
         user_data.house = None
     else:
         user_data.car = None
@@ -337,7 +340,7 @@ def process_choice_submenu(choice, utility):
     :param choice: the choice (integer) the user made form the utility submenu.
     :return: returns nothing.
     """
-    print("In house_submenu_choice")
+    print("In process_choice_submenu")
 
     while choice != 9:
         if choice == 1:
@@ -406,10 +409,10 @@ def process_choice_main_menu(choice):
             print("run_personal_submenu()")
             run_personal_submenu()
         elif choice == 2:
-            utility = "house"
+            utility = house_utility
             run_submenu(utility)
         elif choice == 3:
-            utility = "car"
+            utility = car_utility
             run_submenu(utility)
         else:
             print(menu_error)
