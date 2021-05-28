@@ -218,12 +218,12 @@ def run_personal_submenu():
     """
     print("In run_personal_submenu")
     print(user_data.user)
-    options = personal_submenu_options()
+    options = generate_personal_submenu_options()
     choice = ask_choice(options)
-    personal_submenu_choice(choice)
+    process_choice_personal_submenu(choice)
 
 
-def personal_submenu_options():
+def generate_personal_submenu_options():
     """
     Function generates the menu options that will be displayed to the user.
     Since the menu options aren't changing based upon the user data at the moment, it could also be a variable.
@@ -239,7 +239,7 @@ def personal_submenu_options():
     return options
 
 
-def personal_submenu_choice(choice):
+def process_choice_personal_submenu(choice):
     """
     Function redirects the user based on the choice made from the personal submenu options.
     :param choice: the choice (integer) the user made form the personal submenu.
@@ -260,12 +260,12 @@ def personal_submenu_choice(choice):
         else:
             print(menu_error)
         print(user_data.user)
-        options = personal_submenu_options()
+        options = generate_personal_submenu_options()
         choice = ask_choice(options)
 
 
 # --- GENERAL SUBMENU OPTIONS ---
-def submenu_options(utility):
+def generate_submenu_options(utility):
     """
     Function generates the submenu options based on the chosen utility (f.e. "house" or "car").
     :param utility: string containing the origin of the costs.
@@ -300,12 +300,12 @@ def run_house_submenu(utility):
     """
     print("In run_house_submenu")
     print(user_data.housing_details())
-    options = submenu_options(utility)
+    options = generate_submenu_options(utility)
     choice = ask_choice(options)
-    house_submenu_choice(choice)
+    process_choice_house_submenu(choice)
 
 
-def house_submenu_choice(choice):
+def process_choice_house_submenu(choice):
     """
     Function redirects the user based on the choice made from the house submenu options.
     :param choice: the choice (integer) the user made form the house submenu.
@@ -322,7 +322,7 @@ def house_submenu_choice(choice):
         else:
             print(menu_error)
         print(user_data.housing_details())
-        options = submenu_options("house")
+        options = generate_submenu_options("house")
         choice = ask_choice(options)
 
 
@@ -337,7 +337,7 @@ def run_main_menu():
     print("In run_main_menu")
     options = generate_main_menu_options()
     choice = ask_choice(options)
-    main_menu_process_choice(choice)
+    process_choice_main_menu(choice)
 
 
 def generate_main_menu_options():
@@ -368,7 +368,7 @@ def generate_main_menu_options():
     return menu_options
 
 
-def main_menu_process_choice(choice):
+def process_choice_main_menu(choice):
     """
     Function redirects the user based on the choice made from the menu options.
     :param choice: the choice (integer) the user made form the menu.
