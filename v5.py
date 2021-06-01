@@ -1,4 +1,5 @@
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, String, Integer, ForeignKey
+from sqlalchemy.orm import relationship, backref
 from base import Base
 
 
@@ -36,7 +37,13 @@ class User(Base):
                f"Email:\n {self.email_address}"
 
 
-class House:
+class House(Base):
+    __tablename__ = 'houses'
+
+    id = Column(Integer, primary_key=True)
+    rent_mortgage = Column(Integer)
+    service_costs = Column(Integer)
+
     def __init__(self, rent_mortgage, service_costs):
         self.rent_mortgage = rent_mortgage
         self.service_costs = service_costs
@@ -52,7 +59,15 @@ class House:
                f" - total: €{self.total_costs} per month"
 
 
-class Car:
+class Car(Base):
+    __tablename__ = 'cars'
+
+    id = Column(Integer, primary_key=True)
+    insurance = Column(Integer)
+    road_taxes = Column(Integer)
+    parking_permit = Column(Integer)
+    road_assistance = Column(Integer)
+
     def __init__(self, insurance, road_taxes, parking_permit, road_assistance):
         self.insurance = insurance
         self.road_taxes = road_taxes
@@ -72,7 +87,17 @@ class Car:
                f" - total: €{self.total_costs} per month"
 
 
-class Data:
+class Data(Base):
+    __tablename__ = 'data'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id'))
+    user = relationship("User", backref=backref("data", uselist=False))
+    house_id = Column(Integer, ForeignKey('houses.id'))
+    house = relationship("House", backref=backref("data", uselist=False))
+    car_id = Column(Integer, ForeignKey('cars.id'))
+    car = relationship("Car", backref=backref("data", uselist=False))
+
     def __init__(self, user):
         self.user = user
         self.house = None
