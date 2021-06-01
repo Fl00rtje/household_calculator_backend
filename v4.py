@@ -268,6 +268,7 @@ def process_choice_personal_submenu(choice):
 house_utility = "house"
 car_utility = "car"
 
+
 def run_submenu(utility):
     """
     This is the starting point of the the utility submenu.
