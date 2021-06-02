@@ -457,23 +457,33 @@ def process_choice_main_menu(choice):
         choice = ask_choice(options)
 
 
+def registered_user():
+    count = 0
+    while count < 3:
+        user_email = input("What is your email address? ")
+        user = session.query(User).filter_by(email_address=user_email).first()
+        user_data = session.query(Data).filter_by(user=user).first()
+        if not user_data:
+            count += 1
+            print(f"No user registered with this email address: {user_email}\n"
+                  f"Please try again. You have {3-count} more attempts.")
+        else:
+            return user_data
+
+
 if __name__ == '__main__':
-    # 2 - generate database schema
-    # Base.metadata.create_all(engine)
-    # 3 - create a new session
     session = Session()
 
-    # create the user
-    user = user_details()
+    if yes_or_no("Have you registered previously?"):
+        user_data = registered_user()
+    else:
+        user = user_details()
+        user_data = Data(user)
 
-    # create a data object for the user
-    user_data = Data(user)
+    if user_data:
+        print(f"Welcome {user_data.user.fullname}")
+        run_main_menu()
 
-    run_main_menu()
-
-    # 9 - persists data
-    session.add(user_data)
-
-    # 10 - commit and close session
-    session.commit()
-    session.close()
+        session.add(user_data)
+        session.commit()
+        session.close()
