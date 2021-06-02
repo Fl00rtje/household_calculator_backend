@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship, backref
-from base import Base
+from base import Base, Session, engine
 
 
 class User(Base):
@@ -458,14 +458,22 @@ def process_choice_main_menu(choice):
 
 
 if __name__ == '__main__':
-    # user = user_details()
-    # user_data = Data(user)
-    # house = housing_details()
-    # user_data.house = house
-    # car = car_details()
-    # user_data.car = car
-    # print(user_data)
+    # 2 - generate database schema
+    # Base.metadata.create_all(engine)
+    # 3 - create a new session
+    session = Session()
 
-    user = User("Flora", "Oceania", "flora.oceania@gmail.com")
+    # create the user
+    user = user_details()
+
+    # create a data object for the user
     user_data = Data(user)
+
     run_main_menu()
+
+    # 9 - persists data
+    session.add(user_data)
+
+    # 10 - commit and close session
+    session.commit()
+    session.close()
