@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship, backref
-from base import Base, Session, engine
+from base import Base, Session
 
 
 class User(Base):
@@ -252,7 +252,6 @@ def run_personal_submenu():
     From here you can choose from the personal submenu actions and get redirected to perform them.
     :return: returns nothing.
     """
-    print("In run_personal_submenu")
     print(user_data.user)
     options = generate_personal_submenu_options()
     choice = ask_choice(options)
@@ -281,7 +280,6 @@ def process_choice_personal_submenu(choice):
     :param choice: the choice (integer) the user made form the personal submenu.
     :return: returns nothing.
     """
-    print("In personal_submenu_choice")
 
     while choice != 9:
         if choice == 1:
@@ -311,7 +309,6 @@ def run_submenu(utility):
     From here you can choose from the submenu and get redirected to your choice.
     :return: returns nothing.
     """
-    print("In run_submenu", utility)
     show_utility_details(utility)
     options = generate_submenu_options(utility)
     choice = ask_choice(options)
@@ -345,7 +342,6 @@ def generate_submenu_options(utility):
 
 
 def show_utility_details(utility):
-    print("In show_utility_details")
     if utility == house_utility:
         print(user_data.housing_details())
     else:
@@ -353,7 +349,6 @@ def show_utility_details(utility):
 
 
 def add_change_utility(utility):
-    print("In add_change_utility")
     if utility == house_utility:
         house = housing_details()
         user_data.house = house
@@ -363,7 +358,6 @@ def add_change_utility(utility):
 
 
 def delete_utility(utility):
-    print("In delete_utility")
     if utility == house_utility:
         user_data.house = None
     else:
@@ -377,7 +371,6 @@ def process_choice_submenu(choice, utility):
     :param choice: the choice (integer) the user made form the utility submenu.
     :return: returns nothing.
     """
-    print("In process_choice_submenu")
 
     while choice != 9:
         if choice == 1:
@@ -399,7 +392,6 @@ def run_main_menu():
     From the submenu's you can return to the main menu.
     :return: returns nothing.
     """
-    print("In run_main_menu")
     options = generate_main_menu_options()
     choice = ask_choice(options)
     process_choice_main_menu(choice)
@@ -410,7 +402,6 @@ def generate_main_menu_options():
     Function generates the menu options that will be displayed to the user based on existing user data.
     :return: Returns the generated menu options as a string.
     """
-    print("In main_menu_options")
     options = {
         "user": "View/Change/Delete Personal details",
         "house": "Register housing details",
@@ -439,11 +430,9 @@ def process_choice_main_menu(choice):
     :param choice: the choice (integer) the user made form the menu.
     :return: returns nothing
     """
-    print("In main_menu_choice")
 
     while choice != 9:
         if choice == 1:
-            print("run_personal_submenu()")
             run_personal_submenu()
         elif choice == 2:
             utility = house_utility
@@ -457,6 +446,16 @@ def process_choice_main_menu(choice):
         choice = ask_choice(options)
 
 
+def __search_user(user_email):
+    """
+    Function asks the user for their email address and looks it up in the database.
+    :return: The user_data if the user is registered or None.
+    """
+    user = session.query(User).filter_by(email_address=user_email).first()
+    user_data = session.query(Data).filter_by(user=user).first()
+    return user_data
+
+
 def registered_user():
     """
     Function that gets called when a user states 'y' to being registered previously.
@@ -464,19 +463,23 @@ def registered_user():
     After 3 failed attempts to find the user by the email it stops.
     :return: The user_data that the user is registered with or None.
     """
-    count = 0
+    count = 1
+
     while count < 3:
         user_email = input("What is your email address? ")
-        # make a class method for finding the user?
-        user = session.query(User).filter_by(email_address=user_email).first()
-        # make a class method for finding the user_data?
-        user_data = session.query(Data).filter_by(user=user).first()
+        user_data = __search_user(user_email)
         if not user_data:
-            count += 1
             print(f"No user registered with this email address: {user_email}\n"
-                  f"Please try again. You have {3-count} more attempts.")
+                  f"Please try again. You have {3-count} more attempt(s).")
+            count += 1
         else:
             return user_data
+
+    if count == 3:
+        user_email = input("What is your email address? ")
+        user_data = __search_user(user_email)
+        if not user_data:
+            print("Sorry! We were unable to find you.")
 
 
 if __name__ == '__main__':
