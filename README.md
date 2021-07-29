@@ -1,6 +1,18 @@
 # Flora's Household Calculator
 Welcome! Flora's household calculator is a hobby project. 
-I got the idea of creating a calculating tool when I moved to a new apartment and was wondering what my new costs of housing were going to be.
+I got the idea of creating a calculating tool when I moved to a new apartment and was wondering what my new costs of 
+housing were going to be.
+
+### What does the calculator do?
+You have to register with your name and e-mail. 
+This way the calculator can connect your submitted costs to you.
+In the menu you can:
+1. View/Change/Delete personal details
+2. Register housing details or View/Change/Delete housing details if you have previously submitted them
+3. Register car details or View/Change/Delete car details if you have previously submitted them
+
+### To be continued
+I'd like to add costs for public transport, insurances and a general overview of all the costs in the future.
 
 ### How to start the project
 1. Create a new directory
@@ -18,9 +30,9 @@ db_credentials = {
 }
 ```
 
-7. Start the program by running: python v5.py
+7. Start the program by running: python household_calculator.py
 
-### Specifications
+### Requirements
 - Python
 - PostgreSQL
 - SQLalchemy
