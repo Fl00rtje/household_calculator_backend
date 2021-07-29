@@ -446,14 +446,15 @@ def process_choice_main_menu(choice):
         choice = ask_choice(options)
 
 
-def __search_user(user_email):
+def __search_user():
     """
     Function asks the user for their email address and looks it up in the database.
     :return: The user_data if the user is registered or None.
     """
+    user_email = input("What is your email address? ")
     user = session.query(User).filter_by(email_address=user_email).first()
     user_data = session.query(Data).filter_by(user=user).first()
-    return user_data
+    return user_email, user_data
 
 
 def registered_user():
@@ -466,8 +467,7 @@ def registered_user():
     count = 1
 
     while count < 3:
-        user_email = input("What is your email address? ")
-        user_data = __search_user(user_email)
+        user_email, user_data = __search_user()
         if not user_data:
             print(f"No user registered with this email address: {user_email}\n"
                   f"Please try again. You have {3-count} more attempt(s).")
@@ -476,8 +476,7 @@ def registered_user():
             return user_data
 
     if count == 3:
-        user_email = input("What is your email address? ")
-        user_data = __search_user(user_email)
+        user_email, user_data = __search_user()
         if not user_data:
             print("Sorry! We were unable to find you.")
 
