@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from conf import db_credentials
 
-connection_string = f"postgresql://{db_credentials['user']}:{db_credentials['password']}@localhost:5432/household_calculator"
+connection_string = f"postgresql://{db_credentials['user']}:{db_credentials['password']}{db_credentials['localhost']}"
 engine = create_engine(connection_string, echo=False)
 Session = sessionmaker(bind=engine)
 
