@@ -458,10 +458,18 @@ def process_choice_main_menu(choice):
 
 
 def registered_user():
+    """
+    Function that gets called when a user states 'y' to being registered previously.
+    It asks the user for their e-mail and checks that with the existing user email addresses.
+    After 3 failed attempts to find the user by the email it stops.
+    :return: The user_data that the user is registered with or None.
+    """
     count = 0
     while count < 3:
         user_email = input("What is your email address? ")
+        # make a class method for finding the user?
         user = session.query(User).filter_by(email_address=user_email).first()
+        # make a class method for finding the user_data?
         user_data = session.query(Data).filter_by(user=user).first()
         if not user_data:
             count += 1
