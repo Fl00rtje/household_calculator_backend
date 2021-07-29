@@ -9,7 +9,18 @@ The calculator asks y
 2. Create a virtual environment for the project
 3. Clone the project to your computer: <link>
 4. Install the requirements: pip install -r requirements.txt
-5. 
+5. Create a PostgreSQL database and start the server
+6. Create a conf.py file in the household_calculator_2021 folder with the following database details:
+
+```
+db_credentials = {
+    "user": <the user you created, for example: "bigbird">,
+    "password": <the password you created, for example: "elmo">
+    "localhost": <where you can reach the database, for example: "@localhost:5432/household_calculator_2021">
+}
+```
+
+7. Start the program by running: python v5.py
 
 
 ### 
